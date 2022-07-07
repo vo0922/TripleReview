@@ -27,4 +27,6 @@ public class UserPointService {
     public List<UserPoint> searchAll() {
         return userPointRepository.findAll();
     }
+
+    public UserPoint search(String id) {return userPointRepository.findById(UUID.fromString(id)).orElse(null);}
 }
