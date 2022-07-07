@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,15 +21,17 @@ import java.util.List;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserPointService userPointService;
+    private final HistoryService historyService;
     @Transactional
     public ResponseEntity<String> add(EventDto eventDto) {
+        List<String> history = new ArrayList<>();
         Integer point = 0;
 
         userPointService.add(eventDto.getUserId());
 
-        if(!eventDto.getContent().isEmpty()) point++;
-        if(!eventDto.getAttachedPhotoIds().isEmpty()) point++;
-        if(!reviewRepository.existsByPlaceId(eventDto.getPlaceId())) point++;
+        if(!eventDto.getContent().isEmpty()) {point++; history.add("내용 추가");};
+        if(!eventDto.getAttachedPhotoIds().isEmpty()) {point++; history.add("사진 추가");};
+        if(!reviewRepository.existsByPlaceId(eventDto.getPlaceId())) {point++; history.add("첫 리뷰");};
 
         Review review = new Review(eventDto.getReviewId(), eventDto.getContent(), eventDto.getAttachedPhotoIds(), eventDto.getUserId(), eventDto.getPlaceId(), point);
 
@@ -37,6 +40,7 @@ public class ReviewService {
         } else if(reviewRepository.findByUserIdAndPlaceId(eventDto.getUserId(), eventDto.getPlaceId()) != null){
             return new ResponseEntity<String>("등록 실패 이미 리뷰를 작성했습니다.", new HttpHeaders(), HttpStatus.BAD_REQUEST);
         } else{
+            if(!history.isEmpty()) historyService.addLog(review.getUserId(), point, history);
             reviewRepository.save(review);
             return new ResponseEntity<String>("등록 성공", new HttpHeaders(), HttpStatus.CREATED);
         }
@@ -52,16 +56,28 @@ public class ReviewService {
             throw new RuntimeException("수정할 리뷰가 없습니다.");
         }
 
+        List<String> history = new ArrayList<>();
+        Integer count = review.getPoint();
         Integer point = 0;
 
-        if(!eventDto.getContent().isEmpty()) point++;
-        if(!eventDto.getAttachedPhotoIds().isEmpty()) point++;
-        if(reviewRepository.findByPlaceId(eventDto.getPlaceId()).size()<=1) point++;
+        if(review.getContent().isEmpty() && !eventDto.getContent().isEmpty()) {
+            point++; history.add("내용 추가");
+        }else if(!review.getContent().isEmpty() && eventDto.getContent().isEmpty()){
+            point--; history.add("내용 삭제");
+        }
+        if(review.getAttachedPhtoIds().equals("[]") && !eventDto.getAttachedPhotoIds().isEmpty()) {
+            point++; history.add("사진 추가");
+        }else if(!review.getAttachedPhtoIds().equals("[]") && eventDto.getAttachedPhotoIds().isEmpty()) {
+            point--; history.add("사진 삭제");
+        }
 
-        Review target = new Review(eventDto.getReviewId(), eventDto.getContent(), eventDto.getAttachedPhotoIds(), eventDto.getUserId(), eventDto.getPlaceId(), point);
+
+        count += point;
+        Review target = new Review(eventDto.getReviewId(), eventDto.getContent(), eventDto.getAttachedPhotoIds(), eventDto.getUserId(), eventDto.getPlaceId(), count);
 
         if(review.getUserId().equals(target.getUserId()) && review.getPlaceId().equals(target.getPlaceId())){
             review.patch(target);
+            if(!history.isEmpty()) historyService.addLog(review.getUserId(), point, history);
             return reviewRepository.save(review);
         }else {
             throw new RuntimeException("잘못된 유저 또는 장소입니다.");
@@ -72,9 +88,13 @@ public class ReviewService {
     @Transactional
     public void delete(EventDto eventDto) {
         Review review = reviewRepository.findById(eventDto.getReviewId()).orElse(null);
+        List<String> history = new ArrayList<>();
+        history.add("리뷰 삭제");
+
         if(review == null){
             throw new RuntimeException("삭제할 리뷰가 없습니다.");
         }else {
+            historyService.addLog(review.getUserId(), -review.getPoint(), history);
             reviewRepository.delete(review);
         }
     }
