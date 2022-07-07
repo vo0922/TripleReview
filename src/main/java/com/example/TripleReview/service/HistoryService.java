@@ -14,6 +14,7 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 public class HistoryService {
+
     private final HistoryRepository historyRepository;
 
     @Transactional
@@ -22,4 +23,5 @@ public class HistoryService {
         log.info(userId.toString() + "님이 리뷰작성으로" + point + "p를 획득하였습니다.");
         historyRepository.save(target);
     }
+
 }

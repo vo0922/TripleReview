@@ -19,11 +19,13 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class ReviewService {
+
     private final ReviewRepository reviewRepository;
     private final UserPointService userPointService;
     private final HistoryService historyService;
+
     @Transactional
-    public ResponseEntity<String> add(EventDto eventDto) {
+    public Review add(EventDto eventDto) {
         List<String> history = new ArrayList<>();
         Integer point = 0;
 
@@ -36,13 +38,12 @@ public class ReviewService {
         Review review = new Review(eventDto.getReviewId(), eventDto.getContent(), eventDto.getAttachedPhotoIds(), eventDto.getUserId(), eventDto.getPlaceId(), point);
 
         if(reviewRepository.existsByReviewId(eventDto.getReviewId())){
-            return new ResponseEntity<String>("등록 실패 중복된 리뷰id 입니다.", new HttpHeaders(), HttpStatus.BAD_REQUEST);
+            throw new RuntimeException("중복된 리뷰 id 입니다.");
         } else if(reviewRepository.findByUserIdAndPlaceId(eventDto.getUserId(), eventDto.getPlaceId()) != null){
-            return new ResponseEntity<String>("등록 실패 이미 리뷰를 작성했습니다.", new HttpHeaders(), HttpStatus.BAD_REQUEST);
+            throw new RuntimeException("이미 리뷰를 작성하셨습니다.");
         } else{
             if(!history.isEmpty()) historyService.addLog(review.getUserId(), point, history);
-            reviewRepository.save(review);
-            return new ResponseEntity<String>("등록 성공", new HttpHeaders(), HttpStatus.CREATED);
+            return reviewRepository.save(review);
         }
 
     }

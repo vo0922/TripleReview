@@ -23,5 +23,5 @@ public class UserPointController {
     }
 
     @GetMapping("/point/{id}")
-    public UserPoint find(@PathVariable String id) { return userPointService.search(id); }
+    public UserPoint find(@PathVariable UUID id) { return userPointService.search(id); }
 }

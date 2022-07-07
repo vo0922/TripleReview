@@ -21,7 +21,8 @@ public class ReviewController {
     public ResponseEntity<String> event(@RequestBody EventDto eventDto) {
         switch(eventDto.getAction()) {
             case "ADD":
-                return reviewService.add(eventDto);
+                reviewService.add(eventDto);
+                return new ResponseEntity<String>("등록 성공", new HttpHeaders(), HttpStatus.CREATED);
             case "MOD":
                 reviewService.mod(eventDto);
                 return new ResponseEntity<String>("수정 성공", new HttpHeaders(), HttpStatus.CREATED);

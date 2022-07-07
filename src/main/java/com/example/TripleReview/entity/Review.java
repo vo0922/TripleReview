@@ -17,6 +17,8 @@ import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Getter
 @Table(indexes = @Index(name = "pointSearchIdx", columnList = "userId"))
 @DynamicInsert

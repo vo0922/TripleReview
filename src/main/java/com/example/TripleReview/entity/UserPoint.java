@@ -15,6 +15,7 @@ import java.util.UUID;
 @Getter
 @DynamicInsert
 public class UserPoint {
+
     @Id
     @Column(columnDefinition = "BINARY(16)")
     private UUID userId;

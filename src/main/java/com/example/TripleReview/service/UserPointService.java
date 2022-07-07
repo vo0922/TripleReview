@@ -14,6 +14,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class UserPointService {
+
     private final UserPointRepository userPointRepository;
 
     @Transactional
@@ -28,5 +29,5 @@ public class UserPointService {
         return userPointRepository.findAll();
     }
 
-    public UserPoint search(String id) {return userPointRepository.findById(UUID.fromString(id)).orElse(null);}
+    public UserPoint search(UUID id) {return userPointRepository.findById(id).orElse(null);}
 }
