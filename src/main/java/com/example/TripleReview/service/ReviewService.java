@@ -57,6 +57,10 @@ public class ReviewService {
             throw new RuntimeException("수정할 리뷰가 없습니다.");
         }
 
+        if(!review.getUserId().equals(eventDto.getUserId())) {
+            throw new RuntimeException("수정할 권한이 없습니다.");
+        }
+
         List<String> history = new ArrayList<>();
         Integer count = review.getPoint();
         Integer point = 0;
@@ -87,7 +91,7 @@ public class ReviewService {
     }
 
     @Transactional
-    public void delete(EventDto eventDto) {
+    public Review delete(EventDto eventDto) {
         Review review = reviewRepository.findById(eventDto.getReviewId()).orElse(null);
         List<String> history = new ArrayList<>();
         history.add("리뷰 삭제");
@@ -97,6 +101,7 @@ public class ReviewService {
         }else {
             historyService.addLog(review.getUserId(), -review.getPoint(), history);
             reviewRepository.delete(review);
+            return review;
         }
     }
 
