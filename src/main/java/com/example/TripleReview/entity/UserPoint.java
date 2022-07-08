@@ -1,7 +1,9 @@
 package com.example.TripleReview.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -14,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @DynamicInsert
+@ToString
 public class UserPoint {
 
     @Id
