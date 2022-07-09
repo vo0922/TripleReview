@@ -76,7 +76,6 @@ public class ReviewService {
             point--; history.add("사진 삭제");
         }
 
-
         count += point;
         Review target = new Review(eventDto.getReviewId(), eventDto.getContent(), eventDto.getAttachedPhotoIds(), eventDto.getUserId(), eventDto.getPlaceId(), count);
 

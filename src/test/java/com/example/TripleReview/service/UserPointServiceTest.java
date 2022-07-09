@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.transaction.Transactional;
 
 import java.util.UUID;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -50,4 +49,5 @@ class UserPointServiceTest {
         // 비교
         assertEquals(userPoint.toString(), userPoint_test.toString());
     }
+
 }
