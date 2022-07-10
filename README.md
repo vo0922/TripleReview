@@ -32,9 +32,18 @@ POST /events
 + Spring Boot 2.7.1
 + MariaDB 10.5
 + JDK 17
++ Junit5
 ## 실행방법
 URL: localhost:8080
 1. Intellij로 서버 실행
 2. API 요청에 Postman 사용
 3. http://localhost:8080/events (Post)요청 으로 Review CRUD 요청
 4. http://localhost:8080/{userId} (Get)요청 으로 사용자 포인트 조회
+## Test코드
+Service 별로 단위 테스트 진행
+* Review service Test
+![image](https://user-images.githubusercontent.com/71069665/178142085-668d710e-73fc-4637-9897-f6ccfa916761.png)
+* UserPointService Test
+![image](https://user-images.githubusercontent.com/71069665/178142112-827c514b-0e03-4266-98a8-be36b26b3e6e.png)
+
+
