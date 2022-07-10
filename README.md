@@ -41,9 +41,9 @@ URL: localhost:8080
 4. http://localhost:8080/{userId} (Get)요청 으로 사용자 포인트 조회
 ## Test코드
 Service 별로 단위 테스트 진행
-* Review service Test
+* Review service Test<br/>
 ![image](https://user-images.githubusercontent.com/71069665/178142085-668d710e-73fc-4637-9897-f6ccfa916761.png)
-* UserPointService Test
+* UserPointService Test<br/>
 ![image](https://user-images.githubusercontent.com/71069665/178142112-827c514b-0e03-4266-98a8-be36b26b3e6e.png)
 
 
