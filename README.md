@@ -24,3 +24,17 @@ POST /events
   + 특정 장소에 첫 리뷰 작성 : 1점
 + 포인트 증감이 있을 때마다 이력
 + 테스트 케이스 작성
+--------------------------------------------------------------------------------------
+## SQL 스키마
+![image](https://user-images.githubusercontent.com/71069665/178139329-ce97e1ee-f43c-49d0-a7ec-71380a195160.png)
+<br/>SQL DDL파일은 과제파일과 함께 포함되어 있습니다.
+## 실행환경
++ Spring Boot 2.7.1
++ MariaDB 10.5
++ JDK 17
+## 실행방법
+URL: localhost:8080
+1. Intellij로 서버 실행
+2. API 요청에 Postman 사용
+3. http://localhost:8080/events (Post)요청 으로 Review CRUD 요청
+4. http://localhost:8080/{userId} (Get)요청 으로 사용자 포인트 조회
