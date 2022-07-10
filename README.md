@@ -25,8 +25,41 @@ POST /events
 + 포인트 증감이 있을 때마다 이력
 + 테스트 케이스 작성
 --------------------------------------------------------------------------------------
-## SQL 스키마
-![image](https://user-images.githubusercontent.com/71069665/178139329-ce97e1ee-f43c-49d0-a7ec-71380a195160.png)
+## SQL DDL
+*리뷰 테이블(review)
+```
+CREATE TABLE `review` (
+  `review_id` binary(16) NOT NULL,
+  `lastupdate_date` datetime DEFAULT NULL,
+  `attached_phto_ids` varchar(255) DEFAULT NULL,
+  `content` varchar(255) DEFAULT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `place_id` binary(16) NOT NULL,
+  `point` int(11) DEFAULT 0,
+  `user_id` binary(16) NOT NULL,
+  PRIMARY KEY (`review_id`),
+  KEY `pointSearchIdx` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+*사용자 포인트 테이블(user_point)
+```
+CREATE TABLE `user_point` (
+  `user_id` binary(16) NOT NULL,
+  `point` int(11) DEFAULT 0,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+*포인트 증감 테이블(history)
+```
+CREATE TABLE `history` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `create_date` datetime DEFAULT NULL,
+  `point` int(11) DEFAULT NULL,
+  `text` varchar(255) DEFAULT NULL,
+  `user_id` binary(16) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
+```
 <br/>SQL DDL파일은 과제파일과 함께 포함되어 있습니다.
 ## 실행환경
 + Spring Boot 2.7.1
