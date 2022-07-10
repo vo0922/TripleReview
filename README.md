@@ -60,7 +60,8 @@ CREATE TABLE `history` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
 ```
-<br/>SQL DDL파일은 과제파일과 함께 포함되어 있습니다. [triple.sql]https://github.com/vo0922/TripleReview/blob/0171127016b3932b918cf230386dc464689c3647/triple.sql
+<br/>SQL DDL파일은 과제파일과 함께 포함되어 있습니다. 
+[triple.sql](https://github.com/vo0922/TripleReview/blob/0171127016b3932b918cf230386dc464689c3647/triple.sql)
 ## 실행환경
 + Spring Boot 2.7.1
 + MariaDB 10.5
