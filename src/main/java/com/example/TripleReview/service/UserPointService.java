@@ -1,6 +1,7 @@
 package com.example.TripleReview.service;
 
 import com.example.TripleReview.entity.UserPoint;
+import com.example.TripleReview.repository.ReviewRepository;
 import com.example.TripleReview.repository.UserPointRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import java.util.List;
 public class UserPointService {
 
     private final UserPointRepository userPointRepository;
+    private final ReviewRepository reviewRepository;
 
     @Transactional
     public void add(UUID id) {
@@ -30,4 +32,13 @@ public class UserPointService {
     }
 
     public UserPoint search(UUID id) {return userPointRepository.findById(id).orElse(null);}
+
+    @Transactional
+    public UserPoint setPoint(UUID userId) {
+        Integer pointAll = reviewRepository.pointGrant(userId);
+        if(pointAll == null) pointAll = 0;
+        UserPoint userPoint = userPointRepository.findById(userId).orElse(null);
+        userPoint.setPoint(pointAll);
+        return userPointRepository.save(userPoint);
+    }
 }

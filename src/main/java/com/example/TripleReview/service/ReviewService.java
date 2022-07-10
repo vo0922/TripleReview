@@ -5,9 +5,6 @@ import com.example.TripleReview.entity.Review;
 import com.example.TripleReview.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -43,11 +40,12 @@ public class ReviewService {
             throw new RuntimeException("이미 리뷰를 작성하셨습니다.");
         } else{
             if(!history.isEmpty()) historyService.addLog(review.getUserId(), point, history);
-            return reviewRepository.save(review);
+            Review reviewSave = reviewRepository.save(review);
+            userPointService.setPoint(reviewSave.getUserId());
+            return reviewSave;
         }
 
     }
-
 
     @Transactional
     public Review mod(EventDto eventDto) {
@@ -82,7 +80,9 @@ public class ReviewService {
         if(review.getUserId().equals(target.getUserId()) && review.getPlaceId().equals(target.getPlaceId())){
             review.patch(target);
             if(!history.isEmpty()) historyService.addLog(review.getUserId(), point, history);
-            return reviewRepository.save(review);
+            Review reviewSave = reviewRepository.save(review);
+            userPointService.setPoint(reviewSave.getUserId());
+            return reviewSave;
         }else {
             throw new RuntimeException("잘못된 유저 또는 장소입니다.");
         }
@@ -100,6 +100,7 @@ public class ReviewService {
         }else {
             historyService.addLog(review.getUserId(), -review.getPoint(), history);
             reviewRepository.delete(review);
+            userPointService.setPoint(review.getUserId());
             return review;
         }
     }

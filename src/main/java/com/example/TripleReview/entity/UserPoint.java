@@ -26,7 +26,12 @@ public class UserPoint {
     @ColumnDefault("0")
     private Integer point;
 
+    public void setPoint(Integer point) {
+        this.point = point;
+    }
+
     public UserPoint(UUID id) {
         this.userId = id;
     }
+
 }

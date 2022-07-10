@@ -2,6 +2,7 @@ package com.example.TripleReview.service;
 
 import com.example.TripleReview.dto.EventDto;
 import com.example.TripleReview.entity.Review;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ class ReviewServiceTest {
 
     @Autowired ReviewService reviewService;
 
+    @DisplayName("리뷰 작성")
     @Test
     @Transactional
     void add_success() {
@@ -45,6 +47,7 @@ class ReviewServiceTest {
         assertEquals(review.toString(), reviewReal.toString());
     }
 
+    @DisplayName("리뷰 작성 실패(사용자가 한 장소에 2개이상의 리뷰를 쓸 경우)")
     @Test
     @Transactional
     void add_fail1() {
@@ -80,6 +83,7 @@ class ReviewServiceTest {
         assertEquals(exception.getMessage(), message);
     }
 
+    @DisplayName("리뷰 작성 실패(reviewId가 같을경우)")
     @Test
     @Transactional
     void add_fail2() {
@@ -116,6 +120,7 @@ class ReviewServiceTest {
     }
 
 
+    @DisplayName("리뷰 수정")
     @Test
     @Transactional
     void mod_success() {
@@ -152,6 +157,7 @@ class ReviewServiceTest {
         assertEquals(reviewMod.toString(), review.toString());
     }
 
+    @DisplayName("리뷰 수정 실패(수정할 리뷰가 없을 경우)")
     @Test
     @Transactional
     void mod_fail1() {
@@ -176,6 +182,7 @@ class ReviewServiceTest {
         assertEquals(exception.getMessage(), message);
     }
 
+    @DisplayName("리뷰 수정 실패(작성된 userId와 수정된 리뷰 userId가 다른경우)")
     @Test
     @Transactional
     void mod_fail2() {
@@ -210,6 +217,7 @@ class ReviewServiceTest {
         assertEquals(exception.getMessage(), message);
     }
 
+    @DisplayName("리뷰 삭제")
     @Test
     @Transactional
     void delete_success() {
@@ -237,6 +245,7 @@ class ReviewServiceTest {
         assertEquals(reviewDelete.toString(), review.toString());
     }
 
+    @DisplayName("리뷰 삭제 실패(삭제할 리뷰가 없을 경우)")
     @Test
     @Transactional
     void delete_fail() {
